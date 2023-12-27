@@ -1,7 +1,15 @@
-import "./App.css";
+import { Outlet } from "react-router";
+import { HomePage } from "./pages/Homepage";
 
 function App() {
-  return <></>;
+  return (
+    <>
+      <HomePage />
+      <main className="py-3">
+        <Outlet />
+      </main>
+    </>
+  );
 }
 
 export default App;
