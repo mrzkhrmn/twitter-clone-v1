@@ -1,15 +1,47 @@
 import { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { FaUsers, FaRegComment } from "react-icons/fa";
-import { useRegisterMutation } from "../../redux/api/userApiSlice";
+import { useLoginMutation } from "../../redux/api/userApiSlice";
 import { useLocation, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "../../redux/features/auth/authSlice";
 import { Link } from "react-router-dom";
+import { message } from "antd";
 
 export const LoginPage = () => {
-  async function handleSubmit(e) {}
-  function handleChange(e) {}
+  const { userInfo } = useSelector((state) => state.auth);
+
+  const [formData, setFormData] = useState({});
+
+  const [login, { isLoading }] = useLoginMutation();
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { search } = useLocation();
+  const searchParam = new URLSearchParams(search);
+  const redirect = searchParam.get("redirect") || "/";
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    try {
+      const res = await login(formData).unwrap();
+      dispatch(setCredentials({ ...res }));
+      message.success("Logged In Successfully");
+    } catch (error) {
+      console.log(error.message);
+      message.error(error.message);
+    }
+  }
+  function handleChange(e) {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  }
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate(redirect);
+    }
+  }, [userInfo, redirect, navigate]);
 
   return (
     <div>
@@ -66,10 +98,11 @@ export const LoginPage = () => {
                 />
                 <div className="flex justify-center mt-10">
                   <button
+                    disabled={isLoading}
                     type="submit"
                     className="text-2xl py-4 px-16 text-white rounded-3xl font-light bg-[#3AA5F3] hover:bg-[#3BB5F9] transition-all duration-200"
                   >
-                    Login
+                    {isLoading ? "Logging In..." : "Login"}
                   </button>
                 </div>
               </form>
@@ -77,6 +110,7 @@ export const LoginPage = () => {
             <div className="flex flex-col items-center mt-16 gap-2">
               <p className="text-lg">Don't have an account?</p>
               <Link
+                disabled={isLoading}
                 to={"/register"}
                 className="transition-all duration-200 text-2xl py-4 px-[70px]  text-white rounded-3xl font-light ring-1 ring-[#3AA5F3] hover:bg-[#3AA5F3]"
               >

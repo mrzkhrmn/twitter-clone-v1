@@ -118,10 +118,11 @@ export const RegisterPage = () => {
                 />
                 <div className="flex justify-center mt-10">
                   <button
+                    disabled={isLoading}
                     type="submit"
                     className="text-2xl py-4 px-16 text-white rounded-3xl font-light bg-[#3AA5F3] hover:bg-[#3BB5F9] transition-all duration-200"
                   >
-                    Register
+                    {isLoading ? "Registering..." : "Register"}
                   </button>
                 </div>
               </form>
@@ -129,10 +130,11 @@ export const RegisterPage = () => {
             <div className="flex flex-col items-center mt-16 gap-2">
               <p className="text-lg">Already have an account?</p>
               <Link
+                disabled={isLoading}
                 to={"/login"}
                 className="transition-all duration-200 text-2xl py-4 px-[70px]  text-white rounded-3xl font-light ring-1 ring-[#3AA5F3] hover:bg-[#3AA5F3]"
               >
-                {isLoading ? "Logging in..." : "Login"}
+                Login
               </Link>
             </div>
           </div>
