@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "../../redux/features/auth/authSlice";
 import { Link } from "react-router-dom";
+import { message } from "antd";
 
 export const RegisterPage = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -21,8 +22,6 @@ export const RegisterPage = () => {
   const searchParam = new URLSearchParams(search);
   const redirect = searchParam.get("redirect") || "/";
 
-  console.log(formData);
-
   function handleChange(e) {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   }
@@ -37,10 +36,18 @@ export const RegisterPage = () => {
       const res = await register(formData).unwrap();
       dispatch(setCredentials({ ...res }));
       navigate(redirect);
+      message.success("User registered successfully!");
     } catch (error) {
       console.log(error.message);
+      message.error(error.message);
     }
   }
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate(redirect);
+    }
+  }, [userInfo, redirect, navigate]);
 
   return (
     <div>
@@ -125,7 +132,7 @@ export const RegisterPage = () => {
                 to={"/login"}
                 className="transition-all duration-200 text-2xl py-4 px-[70px]  text-white rounded-3xl font-light ring-1 ring-[#3AA5F3] hover:bg-[#3AA5F3]"
               >
-                Log in
+                {isLoading ? "Logging in..." : "Login"}
               </Link>
             </div>
           </div>
