@@ -11,7 +11,7 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
       default:
-        "https://media.istockphoto.com/id/1495088043/vector/user-profile-icon-avatar-or-person-icon-profile-picture-portrait-symbol-default-portrait.jpg?s=612x612&w=0&k=20&c=dhV2p1JwmloBTOaGAtaA3AW1KSnjsdMt7-U_3EZElZ0=",
+        "https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/user-male-circle-blue-512.png",
     },
     description: { type: Array, required: true, default: "" },
     isAdmin: { type: Boolean, required: true, default: false },

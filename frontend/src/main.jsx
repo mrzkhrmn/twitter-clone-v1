@@ -9,12 +9,14 @@ import { LoginPage } from "./pages/LoginPage.jsx";
 import { RegisterPage } from "./pages/RegisterPage.jsx";
 import { HomePage } from "./pages/HomePage.jsx";
 import { PrivateRoute } from "./components/PrivateRoute.jsx";
+import { ProfilePage } from "./pages/ProfilePage.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route path="" element={<PrivateRoute />}>
         <Route index={true} path="/" element={<HomePage />} />
+        <Route path="/profile" element={<ProfilePage />} />
       </Route>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />

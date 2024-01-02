@@ -1,16 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { FaUsers, FaRegComment } from "react-icons/fa";
 import { useLoginMutation } from "../../redux/api/userApiSlice";
-import { useLocation, useNavigate } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
 import { setCredentials } from "../../redux/features/auth/authSlice";
 import { Link } from "react-router-dom";
 import { message } from "antd";
 
 export const LoginPage = () => {
-  const { userInfo } = useSelector((state) => state.auth);
-
   const [formData, setFormData] = useState({});
 
   const [login, { isLoading }] = useLoginMutation();
@@ -18,37 +16,28 @@ export const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { search } = useLocation();
-  const searchParam = new URLSearchParams(search);
-  const redirect = searchParam.get("redirect") || "/";
-
   async function handleSubmit(e) {
     e.preventDefault();
     try {
       const res = await login(formData).unwrap();
       dispatch(setCredentials({ ...res }));
       message.success("Logged In Successfully");
+      navigate("/");
     } catch (error) {
-      console.log(error.message);
       message.error(error.message);
+      console.log(error.message);
     }
   }
   function handleChange(e) {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   }
 
-  useEffect(() => {
-    if (userInfo) {
-      navigate(redirect);
-    }
-  }, [userInfo, redirect, navigate]);
-
   return (
     <div>
       <div className="flex  h-[100vh]">
         <div className="bg-[#3AA5F3] text-white w-[1100px] hidden md:flex md:flex-col items-center justify-center gap-10 pb-60">
           <h1 className="text-5xl leading-[60px] font-semibold">
-            See what's happening in <br />
+            See what&apos;s happening in <br />
             the world right now
           </h1>
           <div className="text-3xl font-thin flex flex-col gap-6 justify-center">
@@ -108,7 +97,7 @@ export const LoginPage = () => {
               </form>
             </div>
             <div className="flex flex-col items-center mt-16 gap-2">
-              <p className="text-lg">Don't have an account?</p>
+              <p className="text-lg">Don&apos;t have an account?</p>
               <Link
                 disabled={isLoading}
                 to={"/register"}

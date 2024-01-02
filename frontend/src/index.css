@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  background-color: black;
+}
+
+.active {
+  background-color: rgb(255, 255, 255, 0.08);
+}
+
+.ant-btn-primary {
+  background-color: rgb(0, 119, 255);
+}
